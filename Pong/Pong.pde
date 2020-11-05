@@ -10,6 +10,7 @@ import java.util.Random;
 boolean showDebug = false;
 boolean doOptimization = false;
 boolean testAI = false;
+boolean pauseGame = false;
 
 //Window setup
 //Be careful changing these
@@ -132,7 +133,9 @@ void draw(){
   //Get inputs before drawing the next frame
   GetInputs();
   
-  MoveObjects();//Moves ball and paddles
+  if(!pauseGame){
+    MoveObjects();//Moves ball and paddles
+  }
   //Draw it
   if(!doOptimization){
     DrawStaticObjects();
@@ -142,13 +145,15 @@ void draw(){
   DrawGraph();
   
   
-  //Runs every 25 frames
-  if(frameCount % 25 == 0){
-    if(userPaddleY < ballY && userPaddleY + paddleHeight > ballY){
-      networks[currentNetworkCount].AddFitness(2);//Add fitness for having same y coordinate as the ball
+  if(!pauseGame){
+    //Runs every 25 frames
+    if(frameCount % 25 == 0){
+      if(userPaddleY < ballY && userPaddleY + paddleHeight > ballY){
+        networks[currentNetworkCount].AddFitness(2);//Add fitness for having same y coordinate as the ball
+      }
+      networkInputs = new float[] {ballX / 10, ballY / 10, ballXSpeed, ballYSpeed, userPaddleY};
+      networks[currentNetworkCount].UpdateInputs(networkInputs);
     }
-    networkInputs = new float[] {ballX / 10, ballY / 10, ballXSpeed, ballYSpeed, userPaddleY};
-    networks[currentNetworkCount].UpdateInputs(networkInputs);
   }
 }
 
@@ -188,6 +193,11 @@ void GetInputs(){
     //--Save current network to file
     case 83://S
       SaveCurrentNetworkToPath();
+      break;
+    case 80://P
+      pauseGame = !pauseGame;
+      keyCode = 0;
+      break;
   }
 }
 
