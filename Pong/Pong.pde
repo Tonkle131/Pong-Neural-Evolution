@@ -193,6 +193,7 @@ void GetInputs(){
     //--Save current network to file
     case 83://S
       SaveCurrentNetworkToPath();
+      keyCode = 0;
       break;
     case 80://P
       pauseGame = !pauseGame;
@@ -203,8 +204,8 @@ void GetInputs(){
 
 void SaveCurrentNetworkToPath(){
   Date date = new Date();
-  SimpleDateFormat ft = new SimpleDateFormat("hh-mm-ss");
-  String path = ft.format(date) + networks[currentNetworkCount].fitness;
+  SimpleDateFormat ft = new SimpleDateFormat("mm-dd-ms");
+  String path = ft.format(date) + "-" + networks[currentNetworkCount].fitness + ".txt";
   networks[currentNetworkCount].WriteStructureToFile(path);
 }
 
