@@ -1,5 +1,6 @@
 public class NeuralNet{
   float[] inputs = new float[5];
+  float[] biasInputs = new float[5];
   float[] weights1 = new float[30];
   float[] hiddenLayer1 = new float[6];
   float[] biasHiddenLayer1 = new float[6];
@@ -43,20 +44,20 @@ public class NeuralNet{
   
   //Calculate a single layer
   void CalculateNextLayer(float[] _startLayer, float[] _weights, float[] _endLayer, float[] bias){
-    int x = 0;//Weight counter
+    int weightCounter = 0;//Weight counter
     float total = 0;//Number to do operations on
     //println("In, Weight, Out----------");
     
     //Loop through all output nodes
     for(int i = 0; i < _endLayer.length; i++){
       //println("Node: " + (i + 1));//Display which node is being calculated
-      x = i;//Set weight equal to the node that is being calculated
+     weightCounter = i;//Set weight equal to the node that is being calculated
       
       //Loop through all input nodes
       for(int j = 0; j < _startLayer.length; j++){
-        total += _startLayer[j] * _weights[x];
+        total += _startLayer[j] * _weights[weightCounter];
         //println(_startLayer[j] + ", " + _weights[x] + ", " + (_startLayer[j] * _weights[x]));//Print current operation
-        x += _endLayer.length - 1;//Skip the correct amount of weights for it to corrospond to the correct input and output nodes
+        weightCounter += _endLayer.length - 1;//Skip the correct amount of weights for it to corrospond to the correct input and output nodes
       }
       //Average the output of the nodes and add the bias
       _endLayer[i] = total / (i + 1) + bias[i];
@@ -137,28 +138,30 @@ public class NeuralNet{
   }
   
   void Mutate(){
-    MutateLayer(weights1);
-    MutateLayer(biasHiddenLayer1);
-    MutateLayer(weights2);
-    MutateLayer(biasHiddenLayer2);
-    MutateLayer(weights3);
+    MutateLayer(biasInputs, true);
+    MutateLayer(weights1, false);
+    MutateLayer(biasHiddenLayer1, true);
+    MutateLayer(weights2, false);
+    MutateLayer(biasHiddenLayer2, true);
+    MutateLayer(weights3, false);
     
     mutationRate *= mutationAcceleration;
     mutationAcceleration *= mutationJerk;
     mutationRateDisplay = mutationRate;
   }
   
-  void MutateLayer(float[] _layer){
+  void MutateLayer(float[] _layer, boolean isBias){
     for(int i = 0; i < _layer.length; i++){
       if(random(0,100) < 10){
         _layer[i] += random(-mutationRate, mutationRate);
       }
-      
-      if(_layer[i] < -1f){
-        _layer[i] = -1f;
-      }
-      else if (_layer[i] > 1f){
-        _layer[i] = 1f;
+      if(!isBias){
+        if(_layer[i] < -1f){
+          _layer[i] = -1f;
+        }
+        else if (_layer[i] > 1f){
+          _layer[i] = 1f;
+        }
       }
     }
   }
