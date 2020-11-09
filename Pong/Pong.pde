@@ -10,7 +10,7 @@ import java.util.Random;
 boolean showDebug = false;
 boolean doOptimization = false;
 boolean testAI = false;
-boolean pauseGame = false;
+boolean pauseGame = true;
 
 //Window setup
 //Be careful changing these
@@ -46,7 +46,7 @@ float userPaddleY = sHeight / 2 - paddleHeight / 2;
 //CPU
 float cpuPaddleX = sWidth - sWidth / 80 - paddleWidth;
 float cpuPaddleY = sHeight - sHeight / 2 - paddleHeight / 2;
-int moveTime = 10;
+int moveTime = 20;
 int cpuDifficulty = 30; //Amount of frames between decisions
 boolean moveUp = false;
 boolean moveDown = false;
@@ -135,17 +135,7 @@ void draw(){
   
   if(!pauseGame){
     MoveObjects();//Moves ball and paddles
-  }
-  //Draw it
-  if(!doOptimization){
-    DrawStaticObjects();
-    DrawObjects();//Draws ball and paddles
-  }
-  DrawText();//Draws score and debug text
-  DrawGraph();
-  
-  
-  if(!pauseGame){
+    
     //Runs every 25 frames
     if(frameCount % 25 == 0){
       if(userPaddleY < ballY && userPaddleY + paddleHeight > ballY){
@@ -155,6 +145,13 @@ void draw(){
       networks[currentNetworkCount].UpdateInputs(networkInputs);
     }
   }
+  //Draw it
+  if(!doOptimization){
+    DrawStaticObjects();
+    DrawObjects();//Draws ball and paddles
+  }
+  DrawText();//Draws score and debug text
+  DrawGraph();//TODO
 }
 
 void GetInputs(){
@@ -394,8 +391,8 @@ void DetectBallCollision(){
 //Display text on screen
 void DrawText(){
   //Score
-  text("Player: " + str(userScore), sWidth / 2 - 20, 30); 
-  text("CPU: " + str(cpuScore), sWidth / 2 - 20, 50); 
+  text("NeuralNet: " + str(userScore), sWidth / 2 - 80, 30); 
+  text("CPU: " + str(cpuScore), sWidth / 2 + 10, 30); 
   
   //Debug
   if (showDebug && !doOptimization){
