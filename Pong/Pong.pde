@@ -68,10 +68,11 @@ String[] lines = new String[] {"","","","",""};
 Evolution evolve = new Evolution();
 public float mutationRateDisplay;
 
-//Fitness graph
+//Fitness data
 public List topFitnesses = new ArrayList();
 int graphX = 100;
 int graphY = sHeight - 20;
+HashMap<int, int[]> networkFitnesses = new HashMap<int, int[]>();
 
 //Window setup
 void setup(){
