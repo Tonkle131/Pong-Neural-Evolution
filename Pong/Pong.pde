@@ -25,7 +25,7 @@ int frameRate = 200;
 
 //Ball variables
 float ballStartSpeed = 2f;
-float speedIncrease = .1f;
+float speedIncrease = .5f;
 float ballSpeed = ballStartSpeed;
 float ballWidth = 25;
 float ballHeight = 25;
@@ -56,12 +56,12 @@ int userScore, cpuScore;
 
 //Networks
 //WARNING: networkAmount must be divisable by 4
-int networkAmount = 40;
+int networkAmount = 2;
 NeuralNet[] networks = new NeuralNet[networkAmount];
 int currentNetworkCount = 0;
 int generation = 1;
 float[] networkInputs = new float[5];
-boolean injectNetwork = false;
+boolean injectNetwork = true;
 String[] lines = new String[] {"","","","",""};
 
 //Evolution
@@ -72,7 +72,7 @@ public float mutationRateDisplay;
 public List topFitnesses = new ArrayList();
 int graphX = 100;
 int graphY = sHeight - 20;
-HashMap<int, int[]> networkFitnesses = new HashMap<int, int[]>();
+HashMap<Integer, int[]> networkFitnesses = new HashMap<Integer, int[]>();
 
 //Window setup
 void setup(){
@@ -408,7 +408,15 @@ void DrawText(){
 
 void DrawGraph(){
   if(showDebug && !doOptimization){
-    //TODO make graph of the top fitnesses
+    //Draw y-axis
+    line(50, sHeight - 50, 50, sHeight - 250);
+    //Draw x-axis
+    line(50, sHeight - 50, 250, sHeight - 50);
+    
+    //Draw points
+    for(int i = 0; i < topFitnesses.size(); i++){
+      //ellipse(50 + 100 / (float)topFitnesses.size() * i, 50 + ((float)30000 / (float)topFitnesses.get(i)), 2, 2);
+    }
   }
 }
 
