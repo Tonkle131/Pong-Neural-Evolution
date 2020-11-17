@@ -25,7 +25,7 @@ int frameRate = 200;
 
 //Ball variables
 float ballStartSpeed = 2f;
-float speedIncrease = .2f;
+float speedIncrease = .5f;
 float ballSpeed = ballStartSpeed;
 float ballWidth = 25;
 float ballHeight = 25;
@@ -55,7 +55,7 @@ boolean moveDown = false;
 int userScore, cpuScore;
 
 //Networks
-//WARNING: networkAmount must be divisable by 2
+//WARNING: networkAmount must be divisable by 4
 int networkAmount = 10;
 NeuralNet[] networks = new NeuralNet[networkAmount];
 int currentNetworkCount = 0;
@@ -415,7 +415,7 @@ void DrawGraph(){
     
     //Draw points
     for(int i = 0; i < topFitnesses.size(); i++){
-      ellipse(50 + 100 / topFitnesses.size() * i, 50, 2, 2);
+      //ellipse(50 + 100 / (float)topFitnesses.size() * i, 50 + ((float)30000 / (float)topFitnesses.get(i)), 2, 2);
     }
   }
 }
@@ -447,16 +447,9 @@ void GameOver(){
   
   if(currentNetworkCount >= networkAmount){
     topFitnesses.add(evolve.topFitnessOfGen);
-    
-    println("Saving fitnesses");
-    String[] data = new String[topFitnesses.size()];
     for(int i = 0; i < topFitnesses.size(); i++){
-      data[i] = topFitnesses.get(i).toString();
       println(topFitnesses.get(i));
     }
-    saveStrings("topFitnesses", data);
-    println("Saved fitnesses");
-    
     delay(500);
     evolve.Evolve(networks);
     currentNetworkCount = 0;
