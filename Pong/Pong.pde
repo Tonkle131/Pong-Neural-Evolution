@@ -61,7 +61,7 @@ NeuralNet[] networks = new NeuralNet[networkAmount];
 int currentNetworkCount = 0;
 int generation = 1;
 float[] networkInputs = new float[5];
-boolean injectNetwork = true;
+boolean injectNetwork = false;
 String[] lines = new String[] {"","","","",""};
 
 //Evolution
@@ -415,7 +415,7 @@ void DrawGraph(){
     
     //Draw points
     for(int i = 0; i < topFitnesses.size(); i++){
-      //ellipse(50 + 100 / (float)topFitnesses.size() * i, 50 + ((float)30000 / (float)topFitnesses.get(i)), 2, 2);
+      ellipse(50 + 100 / topFitnesses.size() * i, 50, 2, 2);
     }
   }
 }
