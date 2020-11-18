@@ -56,7 +56,7 @@ int userScore, cpuScore;
 
 //Networks
 //WARNING: networkAmount must be divisable by 2
-int networkAmount = 10;
+int networkAmount = 50;
 NeuralNet[] networks = new NeuralNet[networkAmount];
 int currentNetworkCount = 0;
 int generation = 1;
@@ -69,6 +69,7 @@ Evolution evolve = new Evolution();
 public float mutationRateDisplay;
 
 //Fitness data
+List avgFitnesses = new ArrayList();
 public List topFitnesses = new ArrayList();
 int graphX = 100;
 int graphY = sHeight - 20;
@@ -91,8 +92,8 @@ void setup(){
       networks[i].InjectNetwork(lines);
     }
     else{
-      //networks[i].RandomizeNetwork();
-      networks[i].Mutate();
+      networks[i].RandomizeNetwork();
+      //networks[i].Mutate();
     }
     
     networks[i].WriteStructureToFile("");
@@ -449,12 +450,31 @@ void GameOver(){
     topFitnesses.add(evolve.topFitnessOfGen);
     
     println("Saving fitnesses");
-    String[] data = new String[topFitnesses.size()];
+    //Save average fitnesses
+    float tmpAverageFitnesses = 0;
+    for(int i = 0; i < networks.length; i++){
+      tmpAverageFitnesses += networks[i].fitness;
+      if(i == networks.length - 1){
+        tmpAverageFitnesses /= ++i;
+      }
+    }
+    avgFitnesses.add(tmpAverageFitnesses);
+    String[] data = new String[avgFitnesses.size()];
+    for(int i = 0; i < avgFitnesses.size(); i++){
+      data[i] = avgFitnesses.get(i).toString();
+    }
+    saveStrings("avgFitnesses.txt", data);
+    
+    //Save top fitnesses
     for(int i = 0; i < topFitnesses.size(); i++){
       data[i] = topFitnesses.get(i).toString();
-      println(topFitnesses.get(i));
     }
-    saveStrings("topFitnesses", data);
+    data = new String[topFitnesses.size()];
+    for(int i = 0; i < topFitnesses.size(); i++){
+      data[i] = topFitnesses.get(i).toString();
+    }
+    saveStrings("topFitnesses.txt", data);
+    
     println("Saved fitnesses");
     
     delay(500);
