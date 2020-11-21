@@ -11,9 +11,9 @@ public class NeuralNet{
   float[] output = new float[1];
   
   int fitness = 0;
-  float mutationRate = 0.5;
-  float mutationAcceleration = 0.95;
-  float mutationJerk = 0.99;
+  float mutationRate = 2.0;
+  float mutationAcceleration = 1;
+  float mutationJerk = 1;
   
   //Network saving
   public Boolean printStructure = false;
@@ -152,9 +152,7 @@ public class NeuralNet{
   
   void MutateLayer(float[] _layer, boolean isBias){
     for(int i = 0; i < _layer.length; i++){
-      if(random(0,100) < 10){
-        _layer[i] += random(-mutationRate, mutationRate);
-      }
+      _layer[i] += random(-mutationRate, mutationRate);
       if(!isBias){
         if(_layer[i] < -1f){
           _layer[i] = -1f;

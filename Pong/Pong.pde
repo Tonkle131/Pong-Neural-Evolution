@@ -56,7 +56,7 @@ int userScore, cpuScore;
 
 //Networks
 //WARNING: networkAmount must be divisable by 2
-int networkAmount = 50;
+int networkAmount = 10;
 NeuralNet[] networks = new NeuralNet[networkAmount];
 int currentNetworkCount = 0;
 int generation = 1;
