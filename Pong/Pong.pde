@@ -143,7 +143,7 @@ void draw(){
       if(userPaddleY < ballY && userPaddleY + paddleHeight > ballY){
         networks[currentNetworkCount].AddFitness(2);//Add fitness for having same y coordinate as the ball
       }
-      networkInputs = new float[] {ballX / 10, ballY / 10, ballXSpeed, ballYSpeed, userPaddleY};
+      networkInputs = new float[] {Math.round(ballX / 10), Math.round(ballY / 10), Math.round(ballXSpeed), Math.round(ballYSpeed), userPaddleY};
       networks[currentNetworkCount].UpdateInputs(networkInputs);
     }
   }
@@ -203,8 +203,8 @@ void GetInputs(){
 
 void SaveCurrentNetworkToPath(){
   Date date = new Date();
-  SimpleDateFormat ft = new SimpleDateFormat("mm-dd-ms");
-  String path = ft.format(date) + "-" + networks[currentNetworkCount].fitness + ".txt";
+  SimpleDateFormat ft = new SimpleDateFormat("hh-mm-dd-yyyy");
+  String path = ft.format(date) + "-" + currentNetworkCount + networks[currentNetworkCount].fitness + ".txt";
   networks[currentNetworkCount].WriteStructureToFile(path);
 }
 
@@ -218,7 +218,7 @@ void DrawStaticObjects(){
 void MoveObjects(){
   MoveUserPaddle();//Moves the left paddle
   MoveCPUPaddle();//Moves the right paddle
-  MoveBall();//Moves the ball
+  MoveBall();
 }
 
 //Move location of the left paddle based on inputs

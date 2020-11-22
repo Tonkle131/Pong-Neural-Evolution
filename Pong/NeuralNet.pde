@@ -11,8 +11,8 @@ public class NeuralNet{
   float[] output = new float[1];
   
   int fitness = 0;
-  float mutationRate = 2.0;
-  float mutationAcceleration = 1;
+  float mutationRate = 2;
+  float mutationAcceleration = 0.95;
   float mutationJerk = 1;
   
   //Network saving
@@ -25,6 +25,9 @@ public class NeuralNet{
   void UpdateInputs(float[] _inputs){
     println("--------------------------------------------------------");
     inputs = _inputs;
+    for(int i = 0; i < inputs.length; i++){
+      Math.round(inputs[i]);
+    }
    
     //Start feed forward
     CalculateOutput();
@@ -152,7 +155,14 @@ public class NeuralNet{
   
   void MutateLayer(float[] _layer, boolean isBias){
     for(int i = 0; i < _layer.length; i++){
-      _layer[i] += random(-mutationRate, mutationRate);
+      Random rd = new Random();
+      if(rd.nextBoolean()){
+        _layer[i] += mutationRate;
+      }
+      else{
+        _layer[i] -= mutationRate;
+      }
+      
       if(!isBias){
         if(_layer[i] < -1f){
           _layer[i] = -1f;
