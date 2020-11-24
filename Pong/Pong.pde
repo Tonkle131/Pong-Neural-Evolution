@@ -143,7 +143,7 @@ void draw(){
       if(userPaddleY < ballY && userPaddleY + paddleHeight > ballY){
         networks[currentNetworkCount].AddFitness(2);//Add fitness for having same y coordinate as the ball
       }
-      networkInputs = new float[] {Math.round(ballX / 10), Math.round(ballY / 10), Math.round(ballXSpeed), Math.round(ballYSpeed), userPaddleY};
+      networkInputs = new float[] {ballX / 10, ballY / 10, ballXSpeed, ballYSpeed, userPaddleY};
       networks[currentNetworkCount].UpdateInputs(networkInputs);
     }
   }
