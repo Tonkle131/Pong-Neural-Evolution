@@ -12,7 +12,7 @@ public class NeuralNet{
   
   int fitness = 0;
   float mutationRate = 2;
-  float mutationAcceleration = 0.98;
+  float mutationAcceleration = 0.50;
   float mutationJerk = 1;
   
   //Network saving

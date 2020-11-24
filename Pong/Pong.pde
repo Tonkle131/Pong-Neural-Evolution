@@ -195,7 +195,8 @@ void GetInputs(){
       keyCode = 0;
       break;
     case 80://P
-      pauseGame = !pauseGame;
+      frameRate = 0;
+      frameRate(frameRate);
       keyCode = 0;
       break;
   }
