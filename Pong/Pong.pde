@@ -382,7 +382,8 @@ void DetectBallCollision(){
     networks[currentNetworkCount].AddFitness(600);
     userScore++;
     if (userScore >= 5){
-      networks[currentNetworkCount].fitness *= 2;
+      //Add fitness for winning
+      networks[currentNetworkCount].fitness += 1000;
       GameOver();
     }
     else{
