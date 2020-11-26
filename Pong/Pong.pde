@@ -15,21 +15,21 @@ boolean pauseGame = false;
 //Window setup
 //Be careful changing these
 //TODO: Refactor code to fit any number
-int sHeight = 600;
-int sWidth = 1000;
+final int sHeight = 600;
+final int sWidth = 1000;
 
 //Framerate
-int trainingFrameRate = 999999;
-int playFrameRate = 200;
+final int trainingFrameRate = 999999;
+final int playFrameRate = 200;
 int frameRate = 200;
 
 //Ball variables
-float ballStartSpeed = 2f;
-float speedIncrease = .2f;
+final float ballStartSpeed = 2f;
+final float speedIncrease = .2f;
 float ballSpeed = ballStartSpeed;
-float ballWidth = 25;
-float ballHeight = 25;
-float ballRadius = ballHeight / 2;
+final float ballWidth = 25;
+final float ballHeight = 25;
+final float ballRadius = ballHeight / 2;
 float ballX = sWidth / 2;
 float ballY = sHeight / 2;
 float ballXSpeed = 0;
@@ -37,8 +37,8 @@ float ballYSpeed = 0;
 
 //Declare paddle size and positions
 //Standard
-int paddleWidth = 20;
-int paddleHeight = 120;
+final int paddleWidth = 20;
+final int paddleHeight = 120;
 float paddleSpeed = ballStartSpeed * 1.33333333;
 //User (AI)
 float userPaddleX = sWidth / 80;
@@ -56,23 +56,23 @@ int userScore, cpuScore;
 
 //Networks
 //WARNING: networkAmount must be divisable by 2
-int networkAmount = 10;
+final int networkAmount = 10;
 NeuralNet[] networks = new NeuralNet[networkAmount];
 int currentNetworkCount = 0;
 int generation = 1;
 float[] networkInputs = new float[5];
-boolean injectNetwork = false;
+final boolean injectNetwork = false;
 String[] lines = new String[] {"","","","",""};
 
 //Evolution
-Evolution evolve = new Evolution();
+final Evolution evolve = new Evolution();
 public float mutationRateDisplay;
 
 //Fitness data
 List avgFitnesses = new ArrayList();
 public List topFitnesses = new ArrayList();
-int graphX = 100;
-int graphY = sHeight - 20;
+final int graphX = 100;
+final int graphY = sHeight - 20;
 HashMap<Integer, int[]> networkFitnesses = new HashMap<Integer, int[]>();
 
 //Window setup

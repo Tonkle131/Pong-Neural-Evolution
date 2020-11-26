@@ -5,7 +5,7 @@ public class Evolution{
   public int topFitnessOfGen = -99999999;
   public NeuralNet topNetOfGen = networks[0];
   
-  Boolean singleParent = true;
+  final Boolean singleParent = true;
   
   void Evolve(NeuralNet[] networks){
     SortByFitness(networks);

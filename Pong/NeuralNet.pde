@@ -17,7 +17,7 @@ public class NeuralNet{
   
   //Network saving
   public Boolean printStructure = false;
-  String networkStructurePath = "networkStructure.txt";
+  final String networkStructurePath = "networkStructure.txt";
   String[] data = new String[5];
   int lineCounter = 0;
   
