@@ -10,7 +10,7 @@ import java.util.Random;
 boolean showDebug = false;
 boolean doOptimization = false;
 boolean testAI = false;
-boolean pauseGame = true;
+boolean pauseGame = false;
 
 //Window setup
 //Be careful changing these
@@ -195,8 +195,13 @@ void GetInputs(){
       keyCode = 0;
       break;
     case 80://P
-      frameRate = 0;
-      frameRate(frameRate);
+      pauseGame = !pauseGame;
+      if(pauseGame){
+        frameRate(10);
+      }
+      else{
+        frameRate(playFrameRate);
+      }
       keyCode = 0;
       break;
   }
