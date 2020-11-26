@@ -14,7 +14,6 @@ boolean pauseGame = false;
 
 //Window setup
 //Be careful changing these
-//TODO: Refactor code to fit any number
 final int sHeight = 600;
 final int sWidth = 1000;
 
@@ -61,7 +60,7 @@ NeuralNet[] networks = new NeuralNet[networkAmount];
 int currentNetworkCount = 0;
 int generation = 1;
 float[] networkInputs = new float[5];
-final boolean injectNetwork = false;
+boolean injectNetwork = false;
 String[] lines = new String[] {"","","","",""};
 
 //Evolution

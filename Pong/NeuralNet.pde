@@ -11,7 +11,7 @@ public class NeuralNet{
   float[] output = new float[1];
   
   int fitness = 0;
-  float mutationRate = 2;
+  float mutationRate = 1;
   float mutationAcceleration = 0.25;
   float mutationJerk = 1;
   
@@ -100,20 +100,18 @@ public class NeuralNet{
   }
   
   void InheritSingleParent(NeuralNet parent){//Includes mutation
-    InheritSingleLayer(weights1, parent.weights1);
-    InheritSingleLayer(biasHiddenLayer1, parent.biasHiddenLayer1);
-    InheritSingleLayer(weights2, parent.weights2);
-    InheritSingleLayer(biasHiddenLayer2, parent.biasHiddenLayer2);
-    InheritSingleLayer(weights3, parent.weights3);
+    InheritSingleLayerFromSingleParent(weights1, parent.weights1);
+    InheritSingleLayerFromSingleParent(biasHiddenLayer1, parent.biasHiddenLayer1);
+    InheritSingleLayerFromSingleParent(weights2, parent.weights2);
+    InheritSingleLayerFromSingleParent(biasHiddenLayer2, parent.biasHiddenLayer2);
+    InheritSingleLayerFromSingleParent(weights3, parent.weights3);
     
-    mutationRate *= mutationAcceleration;
-    mutationAcceleration *= mutationJerk;
-    mutationRateDisplay = mutationRate;
+    Mutate();
   }
   
-  void InheritSingleLayer(float[] _ownLayer, float[] _parentLayer){
+  void InheritSingleLayerFromSingleParent(float[] _ownLayer, float[] _parentLayer){
     for (int i = 0; i < _ownLayer.length; i++){
-      _ownLayer[i] = _parentLayer[i] + random(-mutationRate, mutationRate);
+      _ownLayer[i] = _parentLayer[i];
     }
   }
   
@@ -124,14 +122,18 @@ public class NeuralNet{
     InheritLayer(biasHiddenLayer2, mother.biasHiddenLayer2, father.biasHiddenLayer2);
     InheritLayer(weights3, mother.weights3, father.weights3);
     
-    mutationRate *= mutationAcceleration;
-    mutationAcceleration *= mutationJerk;
-    mutationRateDisplay = mutationRate;
+    Mutate();
   }
   
   void InheritLayer(float[] _ownLayer, float[] _motherLayer, float[] _fatherLayer){
+    Random rd = new Random();
     for (int i = 0; i < _ownLayer.length; i++){
-      _ownLayer[i] = random(_motherLayer[i], _fatherLayer[i]);
+      if(rd.nextBoolean()){
+        _ownLayer[i] = _motherLayer[i];
+      }
+      else{
+        _ownLayer[i] = _fatherLayer[i];
+      }
     }
   }
   
@@ -154,8 +156,8 @@ public class NeuralNet{
   }
   
   void MutateLayer(float[] _layer, boolean isBias){
+    Random rd = new Random();
     for(int i = 0; i < _layer.length; i++){
-      Random rd = new Random();
       if(rd.nextBoolean()){
         _layer[i] += mutationRate;
       }
