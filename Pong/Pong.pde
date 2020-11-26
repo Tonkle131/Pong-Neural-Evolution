@@ -54,8 +54,8 @@ boolean moveDown = false;
 int userScore, cpuScore;
 
 //Networks
-//WARNING: networkAmount must be divisable by 2
-final int networkAmount = 10;
+//WARNING: networkAmount must be divisable by 4
+final int networkAmount = 40;
 NeuralNet[] networks = new NeuralNet[networkAmount];
 int currentNetworkCount = 0;
 int generation = 1;
