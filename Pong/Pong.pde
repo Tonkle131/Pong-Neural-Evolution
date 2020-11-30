@@ -14,8 +14,8 @@ boolean pauseGame = false;
 
 //Window setup
 //Be careful changing these
-final int sHeight = 600;
-final int sWidth = 1000;
+final int sHeight = 800;
+final int sWidth = 1200;
 
 //Framerate
 final int trainingFrameRate = 999999;
@@ -23,7 +23,7 @@ final int playFrameRate = 200;
 int frameRate = 200;
 
 //Ball variables
-final float ballStartSpeed = 2f;
+final float ballStartSpeed = 3f;
 final float speedIncrease = .2f;
 float ballSpeed = ballStartSpeed;
 final float ballWidth = 25;
@@ -76,7 +76,7 @@ HashMap<Integer, int[]> networkFitnesses = new HashMap<Integer, int[]>();
 
 //Window setup
 void setup(){
-  size(1000, 600);
+  size(1200, 800);
   frameRate(frameRate);
   
   //Create first generation
@@ -151,8 +151,13 @@ void draw(){
     DrawStaticObjects();
     DrawObjects();//Draws ball and paddles
   }
-  DrawText();//Draws score and debug text
-  DrawGraph();//TODO
+  DrawText();//Draws score
+  
+  if(showDebug){
+    DrawDebug();
+    //DrawGraph();//TODO
+    DrawNetwork(150, 50);
+  }
 }
 
 void GetInputs(){
@@ -401,20 +406,22 @@ void DrawText(){
   //Score
   text("NeuralNet: " + str(userScore), sWidth / 2 - 80, 30); 
   text("CPU: " + str(cpuScore), sWidth / 2 + 10, 30); 
-  
+}
+
+void DrawDebug(){
   //Debug
-  if (showDebug && !doOptimization){
-    text("Generation: " + generation + "  -  Network: " + (currentNetworkCount + 1), sWidth - 380, sHeight - 110);
-    text("Fitness: " + networks[currentNetworkCount].fitness, sWidth - 380, sHeight - 90);
-    text("Highest fitness of generation: " + evolve.topFitnessOfGen, sWidth - 380, sHeight - 70);
-    text("Current mutation rate: " + mutationRateDisplay, sWidth - 380, sHeight - 50);
-    text("Inputs: " + Arrays.toString(networkInputs), sWidth - 380, sHeight - 30);
-    text("Output: " + Arrays.toString(networks[currentNetworkCount].output), sWidth - 380, sHeight - 10);
+  if (!doOptimization){
+    text("Generation: " + generation + "  -  Network: " + (currentNetworkCount + 1), 100, sHeight - 130);
+    text("Fitness: " + networks[currentNetworkCount].fitness, 100, sHeight - 110);
+    text("Highest fitness of generation: " + evolve.topFitnessOfGen, 100, sHeight - 90);
+    text("Current mutation rate: " + mutationRateDisplay, 100, sHeight - 70);
+    text("Inputs: " + Arrays.toString(networkInputs), 100, sHeight - 50);
+    text("Output: " + Arrays.toString(networks[currentNetworkCount].output), 100, sHeight - 30);
   }
 }
 
 void DrawGraph(){
-  if(showDebug && !doOptimization){
+  if(!doOptimization){
     //Draw y-axis
     line(50, sHeight - 50, 50, sHeight - 250);
     //Draw x-axis
@@ -425,6 +432,47 @@ void DrawGraph(){
       ellipse(50 + 100 / topFitnesses.size() * i, 50, 2, 2);
     }
   }
+}
+
+void DrawNetwork(int netX, int netY){
+  NeuralNet currentNet = networks[currentNetworkCount];
+  //Inputs
+  for(int i = 0; i < currentNet.inputs.length; i++){
+    //Weights
+    for(int j = 0; j < currentNet.hiddenLayer1.length; j++){
+      line(netX, netY + (i + 1) * 50 + 25, netX + 100, netY + (j + 1) * 50);
+    }
+    //Nodes
+    circle(netX, netY + (i + 1) * 50 + 25, 20);
+    //Values
+    text(currentNet.inputs[i], netX - 50, netY + (i + 1) * 50 + 15);
+  }
+  //Hidden 1
+  for(int i = 0; i < currentNet.hiddenLayer1.length; i++){
+    //Weights
+    for(int j = 0; j < currentNet.hiddenLayer2.length; j++){
+      line(netX + 100, netY + (i + 1) * 50, netX + 200, netY + (j + 1) * 50);
+    }
+    //Nodes
+    circle(netX + 100, netY + (i + 1) * 50, 20);
+    //Values
+    text(currentNet.hiddenLayer1[i], netX + 50, netY + (i + 1) * 50 - 10);
+  }
+  //Hidden 2
+  for(int i = 0; i < currentNet.hiddenLayer2.length; i++){
+    //Weights
+    for(int j = 0; j < currentNet.output.length; j++){
+      line(netX + 200, netY + (i + 1) * 50, netX + 300, netY + 175);
+    }
+    //Nodes
+    circle(netX + 200, netY + (i + 1) * 50, 20);
+    //Values
+    text(currentNet.hiddenLayer2[i], netX + 150, netY + (i + 1) * 50 - 10);
+  }
+  //Output
+  circle(netX + 300, netY + 175, 20);
+  //Original
+  text(currentNet.output[0], netX + 280, netY + 160);
 }
 
 void DrawObjects(){

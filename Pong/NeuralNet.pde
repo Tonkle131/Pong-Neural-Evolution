@@ -1,14 +1,14 @@
 public class NeuralNet{
-  float[] inputs = new float[5];
-  float[] biasInputs = new float[5];
-  float[] weights1 = new float[30];
-  float[] hiddenLayer1 = new float[6];
-  float[] biasHiddenLayer1 = new float[6];
-  float[] weights2 = new float[36];
-  float[] hiddenLayer2 = new float[6];
-  float[] biasHiddenLayer2 = new float[6];
-  float[] weights3 = new float[6];
-  float[] output = new float[1];
+  public float[] inputs = new float[5];
+  public float[] biasInputs = new float[5];
+  public float[] weights1 = new float[30];
+  public float[] hiddenLayer1 = new float[6];
+  public float[] biasHiddenLayer1 = new float[6];
+  public float[] weights2 = new float[36];
+  public float[] hiddenLayer2 = new float[6];
+  public float[] biasHiddenLayer2 = new float[6];
+  public float[] weights3 = new float[6];
+  public float[] output = new float[1];
   
   int fitness = 0;
   float mutationRate = 1;
