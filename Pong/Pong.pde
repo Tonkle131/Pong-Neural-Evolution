@@ -436,47 +436,56 @@ void DrawGraph(){
 
 void DrawNetwork(int netX, int netY){
   NeuralNet currentNet = networks[currentNetworkCount];
+  
   //Inputs
   for(int i = 0; i < currentNet.inputs.length; i++){
+    int nodeY = netY + (i + 1) * 50 + 25;
+    
     //Weights
     for(int j = 0; j < currentNet.hiddenLayer1.length; j++){
-      line(netX, netY + (i + 1) * 50 + 25, netX + 100, netY + (j + 1) * 50);
+      line(netX, nodeY, netX + 100, netY + (j + 1) * 50);
     }
     //Nodes
-    circle(netX, netY + (i + 1) * 50 + 25, 20);
+    circle(netX, nodeY, 20);
     //Values
-    text(currentNet.inputs[i], netX - 50, netY + (i + 1) * 50 + 15);
+    text(currentNet.inputs[i], netX - 50, nodeY);
   }
+  
   //Hidden 1
   for(int i = 0; i < currentNet.hiddenLayer1.length; i++){
+    int nodeY = netY + (i + 1) * 50;
+    
     //Weights
     for(int j = 0; j < currentNet.hiddenLayer2.length; j++){
-      line(netX + 100, netY + (i + 1) * 50, netX + 200, netY + (j + 1) * 50);
+      line(netX + 100, nodeY, netX + 200, netY + (j + 1) * 50);
     }
     //Nodes
-    circle(netX + 100, netY + (i + 1) * 50, 20);
+    circle(netX + 100, nodeY, 20);
     //Values
     text(currentNet.hiddenLayer1[i], netX + 50, netY + (i + 1) * 50 - 10);
   }
+  
   //Hidden 2
   for(int i = 0; i < currentNet.hiddenLayer2.length; i++){
+    int nodeY = netY + (i + 1) * 50;
+    
     //Weights
     for(int j = 0; j < currentNet.output.length; j++){
-      line(netX + 200, netY + (i + 1) * 50, netX + 300, netY + 175);
+      line(netX + 200, nodeY, netX + 300, netY + 175);
     }
     //Nodes
-    circle(netX + 200, netY + (i + 1) * 50, 20);
+    circle(netX + 200, nodeY, 20);
     //Values
     text(currentNet.hiddenLayer2[i], netX + 150, netY + (i + 1) * 50 - 10);
   }
+  
   //Output
   circle(netX + 300, netY + 175, 20);
-  //Original
   text(currentNet.output[0], netX + 280, netY + 160);
 }
 
 void DrawObjects(){
-  //Draw the objects with the variables that have been changed in the functions above
+  //Draw the objects with the variables that have been changed in the MoveObjects function
   rect(userPaddleX, userPaddleY, paddleWidth, paddleHeight);
   rect(cpuPaddleX, cpuPaddleY, paddleWidth, paddleHeight);
   ellipse(ballX, ballY, ballWidth, ballHeight);
