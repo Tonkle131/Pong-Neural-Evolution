@@ -54,7 +54,7 @@ public class NeuralNet{
     //Loop through all output nodes
     for(int i = 0; i < _endLayer.length; i++){
       //println("Node: " + (i + 1));//Display which node is being calculated
-     weightCounter = i;//Set weight equal to the node that is being calculated
+      weightCounter = i;//Set weight equal to the node that is being calculated
       
       //Loop through all input nodes
       for(int j = 0; j < _startLayer.length; j++){
@@ -63,7 +63,7 @@ public class NeuralNet{
         weightCounter += _endLayer.length - 1;//Skip the correct amount of weights for it to corrospond to the correct input and output nodes
       }
       //Average the output of the nodes and add the bias
-      _endLayer[i] = total / (i + 1) + bias[i];
+      _endLayer[i] = total / _startLayer.length + bias[i];
     }
   }
   

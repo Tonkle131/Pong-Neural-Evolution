@@ -149,14 +149,14 @@ void draw(){
   //Draw it
   if(!doOptimization){
     DrawStaticObjects();
-    DrawObjects();//Draws ball and paddles
-  }
-  DrawText();//Draws score
-  
-  if(showDebug){
-    DrawDebug();
-    //DrawGraph();//TODO
-    DrawNetwork(150, 50);
+    DrawObjects();//Draws ball and paddles4
+    DrawText();//Draws score
+    
+    if(showDebug){
+      DrawDebug();
+      //DrawGraph();//TODO
+      DrawNetwork(150, 50);
+    }
   }
 }
 
@@ -214,7 +214,7 @@ void GetInputs(){
 void SaveCurrentNetworkToPath(){
   Date date = new Date();
   SimpleDateFormat ft = new SimpleDateFormat("hh-mm-dd-yyyy");
-  String path = ft.format(date) + "-" + currentNetworkCount + networks[currentNetworkCount].fitness + ".txt";
+  String path = ft.format(date) + "-" + currentNetworkCount + "-" + networks[currentNetworkCount].fitness + ".txt";
   networks[currentNetworkCount].WriteStructureToFile(path);
 }
 
@@ -319,84 +319,86 @@ void DetectBallCollision(){
     ballYSpeed = abs(ballYSpeed) * -1;
   }
   
-  //Check collision with userPaddle
-  if (ballX < paddleWidth + sWidth / 80 + ballRadius && ballX > sWidth / 80 + paddleWidth / 2 && ballY > userPaddleY & ballY < userPaddleY + paddleHeight){
-    println("Hit userPaddle");
-    
-    IncreaseBallSpeed();
-    
-    //Make ball go to the right
-    ballXSpeed = abs(ballXSpeed);
-    
-    //Check where ball has hit paddle
-    //  Top: YSpeed = +
-    //  Middle: YSpeed = YSpeed
-    //  Bottom: YSpeed = -
-    if(ballY > userPaddleY & ballY < userPaddleY + paddleHeight / 3 && ballYSpeed > 0){//Hit top?
-      println("Hit top of userPaddle");
-      ballYSpeed *= -1;
+  if(ballXSpeed < 0){//Ball is moving left
+    //Check collision with userPaddle
+    if (ballX < paddleWidth + sWidth / 80 + ballRadius && ballX > sWidth / 80 + paddleWidth / 2 && ballY > userPaddleY & ballY < userPaddleY + paddleHeight){
+      println("Hit userPaddle");
       
-    }
-    if(ballY > userPaddleY + paddleHeight - paddleHeight / 3 & ballY < userPaddleY + paddleHeight && ballYSpeed < 0){//Hit bottom?
-      println("Hit bottom of userPaddle");
-      ballYSpeed *= -1;
-    }
-    
-    //Increase fitness of network
-    networks[currentNetworkCount].AddFitness(200);
-  }
-  
-  
-  //Check collision with cpuPaddle
-  if (ballX > sWidth - sWidth / 80 - paddleWidth - ballRadius && ballX < sWidth - sWidth / 80 - paddleWidth / 2 & ballY > cpuPaddleY & ballY < cpuPaddleY + paddleHeight){
-    println("Hit cpuPaddle");
-    
-    IncreaseBallSpeed();
-    
-    //Make ball go to the left
-    ballXSpeed = abs(ballXSpeed) * -1 ;
-    
-    //Check where ball has hit paddle
-    //  Top: YSpeed = +
-    //  Middle: YSpeed = YSpeed
-    //  Bottom: YSpeed = -
-    if(ballY > cpuPaddleY & ballY < cpuPaddleY + paddleHeight / 3){//Hit top?
-      println("Hit top of cpuPaddle");
-      if(ballYSpeed > 0){
-         ballYSpeed *= -1;
+      IncreaseBallSpeed();
+      
+      //Make ball go to the right
+      ballXSpeed = abs(ballXSpeed);
+      
+      //Check where ball has hit paddle
+      //  Top: YSpeed = +
+      //  Middle: YSpeed = YSpeed
+      //  Bottom: YSpeed = -
+      if(ballY > userPaddleY & ballY < userPaddleY + paddleHeight / 3 && ballYSpeed > 0){//Hit top?
+        println("Hit top of userPaddle");
+        ballYSpeed *= -1;
+        
       }
-    }
-    if(ballY > cpuPaddleY + paddleHeight - paddleHeight / 3 & ballY < cpuPaddleY + paddleHeight){//Hit bottom?
-      println("Hit bottom of cpuPaddle");
+      if(ballY > userPaddleY + paddleHeight - paddleHeight / 3 & ballY < userPaddleY + paddleHeight && ballYSpeed < 0){//Hit bottom?
+        println("Hit bottom of userPaddle");
+        ballYSpeed *= -1;
+      }
       
-      if(ballYSpeed < 0){
-         ballYSpeed *= -1;
+      //Increase fitness of network
+      networks[currentNetworkCount].AddFitness(200);
+    }
+    
+    //Detect point score
+    if(ballX < 0){//Ball hit left side
+      networks[currentNetworkCount].AddFitness(-100);
+      cpuScore++;
+      if(cpuScore >= 5){
+        GameOver();
+      }
+      else{
+        ResetGame();
       }
     }
   }
-  
-  //Detect point score
-  if(ballX < 0){//Ball hit left side
-    networks[currentNetworkCount].AddFitness(-100);
-    cpuScore++;
-    if(cpuScore >= 5){
-      GameOver();
+  else{//Ball is moving right
+    //Check collision with cpuPaddle
+    if (ballX > sWidth - sWidth / 80 - paddleWidth - ballRadius && ballX < sWidth - sWidth / 80 - paddleWidth / 2 & ballY > cpuPaddleY & ballY < cpuPaddleY + paddleHeight){
+      println("Hit cpuPaddle");
+      
+      IncreaseBallSpeed();
+      
+      //Make ball go to the left
+      ballXSpeed = abs(ballXSpeed) * -1 ;
+      
+      //Check where ball has hit paddle
+      //  Top: YSpeed = +
+      //  Middle: YSpeed = YSpeed
+      //  Bottom: YSpeed = -
+      if(ballY > cpuPaddleY & ballY < cpuPaddleY + paddleHeight / 3){//Hit top?
+        println("Hit top of cpuPaddle");
+        if(ballYSpeed > 0){
+           ballYSpeed *= -1;
+        }
+      }
+      if(ballY > cpuPaddleY + paddleHeight - paddleHeight / 3 & ballY < cpuPaddleY + paddleHeight){//Hit bottom?
+        println("Hit bottom of cpuPaddle");
+        
+        if(ballYSpeed < 0){
+           ballYSpeed *= -1;
+        }
+      }
     }
-    else{
-      ResetGame();
-    }
-  }
-  
-  if(ballX > sWidth){//Ball hit right side
-    networks[currentNetworkCount].AddFitness(600);
-    userScore++;
-    if (userScore >= 5){
-      //Add fitness for winning
-      networks[currentNetworkCount].fitness += 1000;
-      GameOver();
-    }
-    else{
-      ResetGame();
+    //Detect point score
+    if(ballX > sWidth){//Ball hit right side
+      networks[currentNetworkCount].AddFitness(600);
+      userScore++;
+      if (userScore >= 5){
+        //Add fitness for winning
+        networks[currentNetworkCount].fitness += 1000;
+        GameOver();
+      }
+      else{
+        ResetGame();
+      }
     }
   }
 }
@@ -410,27 +412,23 @@ void DrawText(){
 
 void DrawDebug(){
   //Debug
-  if (!doOptimization){
-    text("Generation: " + generation + "  -  Network: " + (currentNetworkCount + 1), 100, sHeight - 130);
-    text("Fitness: " + networks[currentNetworkCount].fitness, 100, sHeight - 110);
-    text("Highest fitness of generation: " + evolve.topFitnessOfGen, 100, sHeight - 90);
-    text("Current mutation rate: " + mutationRateDisplay, 100, sHeight - 70);
-    text("Inputs: " + Arrays.toString(networkInputs), 100, sHeight - 50);
-    text("Output: " + Arrays.toString(networks[currentNetworkCount].output), 100, sHeight - 30);
-  }
+  text("Generation: " + generation + "  -  Network: " + (currentNetworkCount + 1), 100, sHeight - 130);
+  text("Fitness: " + networks[currentNetworkCount].fitness, 100, sHeight - 110);
+  text("Highest fitness of generation: " + evolve.topFitnessOfGen, 100, sHeight - 90);
+  text("Current mutation rate: " + mutationRateDisplay, 100, sHeight - 70);
+  text("Inputs: " + Arrays.toString(networkInputs), 100, sHeight - 50);
+  text("Output: " + Arrays.toString(networks[currentNetworkCount].output), 100, sHeight - 30);
 }
 
 void DrawGraph(){
-  if(!doOptimization){
-    //Draw y-axis
-    line(50, sHeight - 50, 50, sHeight - 250);
-    //Draw x-axis
-    line(50, sHeight - 50, 250, sHeight - 50);
-    
-    //Draw points
-    for(int i = 0; i < topFitnesses.size(); i++){
-      ellipse(50 + 100 / topFitnesses.size() * i, 50, 2, 2);
-    }
+  //Draw y-axis
+  line(50, sHeight - 50, 50, sHeight - 250);
+  //Draw x-axis
+  line(50, sHeight - 50, 250, sHeight - 50);
+  
+  //Draw points
+  for(int i = 0; i < topFitnesses.size(); i++){
+    ellipse(50 + 100 / topFitnesses.size() * i, 50, 2, 2);
   }
 }
 
