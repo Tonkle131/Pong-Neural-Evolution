@@ -48,22 +48,20 @@ public class NeuralNet{
   //Calculate a single layer
   void CalculateNextLayer(float[] _startLayer, float[] _weights, float[] _endLayer, float[] bias){
     int weightCounter = 0;//Weight counter
-    float total = 0;//Number to do operations on
-    //println("In, Weight, Out----------");
+    float average = 0;//Number to do operations on
     
     //Loop through all output nodes
     for(int i = 0; i < _endLayer.length; i++){
-      //println("Node: " + (i + 1));//Display which node is being calculated
       weightCounter = i;//Set weight equal to the node that is being calculated
       
       //Loop through all input nodes
       for(int j = 0; j < _startLayer.length; j++){
-        total += _startLayer[j] * _weights[weightCounter];
-        //println(_startLayer[j] + ", " + _weights[x] + ", " + (_startLayer[j] * _weights[x]));//Print current operation
+        average += _startLayer[j] * _weights[weightCounter];
         weightCounter += _endLayer.length - 1;//Skip the correct amount of weights for it to corrospond to the correct input and output nodes
       }
+      
       //Average the output of the nodes and add the bias
-      _endLayer[i] = total / _startLayer.length + bias[i];
+      _endLayer[i] = average / _startLayer.length + bias[i];
     }
   }
   
