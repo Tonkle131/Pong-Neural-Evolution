@@ -55,12 +55,12 @@ int userScore, cpuScore;
 
 //Networks
 //WARNING: networkAmount must be divisable by 4
-final int networkAmount = 40;
+final int networkAmount = 20;
 NeuralNet[] networks = new NeuralNet[networkAmount];
 int currentNetworkCount = 0;
 int generation = 1;
 float[] networkInputs = new float[5];
-boolean injectNetwork = false;
+boolean injectNetwork = true;
 String[] lines = new String[] {"","","","",""};
 
 //Evolution
@@ -129,7 +129,7 @@ void PrepareBallVelocities(){
 
 //Draw loop (runs each frame)
 void draw(){
-  background(128);//Clear the frame before drawing
+  background(0, 117, 119);//Clear the frame before drawing
   
   //Get inputs before drawing the next frame
   GetInputs();
@@ -501,6 +501,8 @@ void GameOver(){
     evolve.topFitnessOfGen = networks[currentNetworkCount].fitness;
   }
   
+  cpuDifficulty = Math.round(cpuDifficulty * 0.9f);
+  moveTime = Math.round(moveTime * 0.9f);
   currentNetworkCount++;
   userScore = 0;
   cpuScore = 0;
@@ -515,10 +517,8 @@ void GameOver(){
     float tmpAverageFitnesses = 0;
     for(int i = 0; i < networks.length; i++){
       tmpAverageFitnesses += networks[i].fitness;
-      if(i == networks.length - 1){
-        tmpAverageFitnesses /= ++i;
-      }
     }
+    tmpAverageFitnesses /= networks.length;
     avgFitnesses.add(tmpAverageFitnesses);
     String[] data = new String[avgFitnesses.size()];
     for(int i = 0; i < avgFitnesses.size(); i++){
